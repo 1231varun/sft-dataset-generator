@@ -13,10 +13,30 @@ This repository contains code to:
 ## Installation
 
 ### Requirements
-- Python 3.9+
+- Python 3.9-3.11 (Python 3.12 may have compatibility issues with some packages)
 - PyTorch
 - An account with Hugging Face (free)
 - API access to OpenAI and/or Anthropic (optional but recommended)
+
+### macOS-Specific Setup
+
+If you're using macOS and encounter the `ModuleNotFoundError: No module named '_lzma'` error:
+
+1. Install the xz library using Homebrew:
+```bash
+brew install xz
+```
+
+2. If using pyenv, reinstall Python with the proper dependencies:
+```bash
+# Uninstall the current Python version
+pyenv uninstall 3.12.2
+
+# Install with the proper dependencies
+LDFLAGS="-L$(brew --prefix xz)/lib" CPPFLAGS="-I$(brew --prefix xz)/include" pyenv install 3.12.2
+```
+
+3. Alternatively, if using the system Python, you may need to install Python from python.org with proper dependencies.
 
 ### Setup
 
@@ -37,7 +57,20 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Set up API keys for model providers (if using them):
+If you're using Python 3.12 and encounter issues with some packages, consider:
+```bash
+# Create a virtual environment with Python 3.11 instead
+python3.11 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+4. If you're using Python 3.12, you'll need to install spaCy models manually:
+```bash
+python -m spacy download en_core_web_sm
+```
+
+5. Set up API keys for model providers (if using them):
 ```bash
 # For OpenAI
 export OPENAI_API_KEY="your-openai-api-key"
@@ -48,9 +81,39 @@ export ANTHROPIC_API_KEY="your-anthropic-api-key"
 
 On Windows, use `set` instead of `export`.
 
-5. Login to Hugging Face:
+6. Login to Hugging Face:
 ```bash
 huggingface-cli login
+```
+
+## Troubleshooting
+
+### Missing LZMA Module
+If you encounter `ModuleNotFoundError: No module named '_lzma'`:
+
+1. This is a common issue with Python installations on macOS when the xz library is missing
+2. Follow the macOS-specific setup instructions above
+3. After reinstalling Python, recreate your virtual environment:
+```bash
+rm -rf venv
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Other Common Issues
+
+If you're having issues with package installations:
+
+1. Ensure you have the latest pip: `pip install --upgrade pip`
+2. Try installing packages one by one to identify problematic dependencies
+3. Check system dependencies required by numerical packages:
+```bash
+# On macOS
+brew install cmake libomp
+
+# On Ubuntu
+sudo apt-get install build-essential cmake
 ```
 
 ## Step-by-Step Execution Guide
@@ -221,28 +284,6 @@ df_filtered = df[
 ]
 ```
 
-## Troubleshooting
-
-### API Rate Limits
-
-If you encounter rate limit errors from API providers:
-- Add delays between requests
-- Reduce batch size
-- Switch to different models or providers
-
-### Memory Issues
-
-If you encounter memory errors during embedding or analysis:
-- Reduce sample size in `embedding_analysis`
-- Process data in smaller batches
-- Use a more memory-efficient embedding model
-
-### Model Loading Errors
-
-If you have issues loading large models:
-- Use smaller models like `meta-llama/Llama-3-8B-Instruct` instead of larger variants
-- Add quantization options to reduce memory usage
-
 ## Contributing
 
 Contributions to improve the dataset generation or analysis are welcome! Please feel free to open issues or submit pull requests.
@@ -250,3 +291,47 @@ Contributions to improve the dataset generation or analysis are welcome! Please 
 ## License
 
 This project is licensed under the Apache 2.0 License.
+
+# Environment Variables
+
+This project uses environment variables for configuration. You can set them in your environment or use a `.env` file.
+
+1. Copy the example environment file to create your own:
+```bash
+cp .env.example .env
+```
+
+2. Edit the `.env` file with your own values:
+```bash
+# Set your Hugging Face username
+HF_USERNAME=your-username
+
+# Set your API keys
+OPENAI_API_KEY=your-openai-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+```
+
+3. Install python-dotenv:
+```bash
+pip install python-dotenv
+```
+
+4. The application will automatically load variables from the `.env` file when it runs.
+
+## Available Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| HF_USERNAME | Your Hugging Face username | 1231varun |
+| OPENAI_MODEL | OpenAI model to use | gpt-4o |
+| ANTHROPIC_MODEL | Anthropic model to use | claude-3-opus-20240229 |
+| TRANSFORMERS_MODEL | Local transformer model | meta-llama/Llama-3-8B-Instruct |
+| OPENAI_API_KEY | OpenAI API key | (required) |
+| ANTHROPIC_API_KEY | Anthropic API key | (required) |
+| DATASET_NAME | Name of the complete dataset | sft-complete-dataset |
+| FILTERED_DATASET_NAME | Name of the filtered dataset | sft-filtered-dataset |
+| TOXICITY_THRESHOLD | Maximum toxicity score for filtered data | 0.3 |
+| MIN_INSTRUCTION_LENGTH | Minimum instruction length | 20 |
+| MIN_RESPONSE_LENGTH | Minimum response length | 50 |
+| MIN_READABILITY_SCORE | Minimum readability score | 30 |
+| CONVERSATION_SAMPLE_SIZE | Number of examples to use for conversations | 500 |

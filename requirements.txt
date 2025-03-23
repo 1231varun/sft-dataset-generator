@@ -22,7 +22,10 @@ tqdm>=4.65.0
 
 # Text analysis tools
 textstat>=0.7.3
-text-descriptives>=0.2.0
+# text-descriptives>=0.2.0 - Removed due to Python 3.12 compatibility issues
+# Alternative text analysis packages
+nltk>=3.8.1
+spacy>=3.7.2
 dataset-tools>=0.1.0
 
 # Embedding and interactive visualization
@@ -30,4 +33,7 @@ nomic>=2.0.3
 
 # Optional dependencies for efficient processing
 accelerate>=0.20.0
-bitsandbytes>=0.39.0 
+bitsandbytes>=0.39.0
+
+# Add this to requirements.txt
+python-dotenv>=1.0.0 
