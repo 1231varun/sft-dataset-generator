@@ -137,3 +137,55 @@ This dataset is designed for:
 ### Citation Information
 
 If you use this dataset, please cite it as: 
+
+# SFT Filtered Dataset
+
+## Dataset Description
+This dataset contains high-quality instruction-response pairs for supervised fine-tuning of language models. The dataset has been filtered for readability, appropriate length, and low toxicity to ensure high-quality training examples.
+
+## Dataset Creation Process
+This dataset was created through a synthetic data generation pipeline:
+
+1. **Initial Seed Instructions**: Started with diverse seed instructions across domains including education, science, writing, business, technology, and health.
+
+2. **Instruction Evolution**: Applied techniques similar to EvolInstruct to develop more complex and nuanced instructions.
+
+3. **Response Generation**: Created high-quality, detailed responses that meet readability standards.
+
+4. **Multi-turn Conversations**: Generated natural follow-up questions and responses to create conversational examples.
+
+5. **Quality Filtering**: Applied multiple quality metrics to ensure only the best examples are included:
+   - Minimum instruction and response lengths
+   - Readability scoring
+   - Toxicity detection
+   - Content diversity
+
+## Dataset Statistics
+- Total examples: [fill in after running]
+- Average instruction length: [fill in after running] characters
+- Average response length: [fill in after running] characters
+- Domains covered: Education, Science, Writing, Business, Technology, Health
+
+## Dataset Structure
+```json
+{
+  "instruction": "Write a descriptive paragraph about a sunset over the ocean using sensory details.",
+  "response": "The gentle waves lapped against the shore as the sun began its descent toward the horizon..."
+}
+```
+
+## Intended Uses
+This dataset is designed for supervised fine-tuning of language models to improve:
+- Instruction following capability
+- Response quality and readability
+- Domain knowledge across multiple topics
+
+## Additional Information
+This dataset was created as part of Project 1 for Uplimit's course on synthetic data generation for LLM fine-tuning.
+
+You can find related datasets from the same pipeline:
+- [Initial instructions](https://huggingface.co/datasets/1231varun/sft-selfinstruct-dataset)
+- [Evolved instructions](https://huggingface.co/datasets/1231varun/sft-evolinstruct-dataset)
+- [Response dataset](https://huggingface.co/datasets/1231varun/sft-response-dataset)
+- [Conversation dataset](https://huggingface.co/datasets/1231varun/sft-conversation-dataset)
+- [Complete dataset](https://huggingface.co/datasets/1231varun/sft-complete-dataset) 

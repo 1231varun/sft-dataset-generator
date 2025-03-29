@@ -23,10 +23,10 @@ load_dotenv()
 HF_USERNAME = os.environ.get("HF_USERNAME", "your-username")
 DATASET_NAME = os.environ.get("DATASET_NAME", "sft-complete-dataset")
 FILTERED_DATASET_NAME = os.environ.get("FILTERED_DATASET_NAME", "sft-filtered-dataset")
-TOXICITY_THRESHOLD = float(os.environ.get("TOXICITY_THRESHOLD", "0.3"))
-MIN_INSTRUCTION_LENGTH = int(os.environ.get("MIN_INSTRUCTION_LENGTH", "20"))
-MIN_RESPONSE_LENGTH = int(os.environ.get("MIN_RESPONSE_LENGTH", "50"))
-MIN_READABILITY_SCORE = float(os.environ.get("MIN_READABILITY_SCORE", "30"))
+TOXICITY_THRESHOLD = float(os.environ.get("TOXICITY_THRESHOLD", "0.5"))
+MIN_INSTRUCTION_LENGTH = int(os.environ.get("MIN_INSTRUCTION_LENGTH", "15"))
+MIN_RESPONSE_LENGTH = int(os.environ.get("MIN_RESPONSE_LENGTH", "30"))
+MIN_READABILITY_SCORE = float(os.environ.get("MIN_READABILITY_SCORE", "10"))
 
 # Create output directory
 OUTPUT_DIR = "analysis_output"
@@ -262,6 +262,24 @@ def analyze_dataset():
         (df["response"].apply(len) > MIN_RESPONSE_LENGTH) &
         (df["readability_score"] > MIN_READABILITY_SCORE)
     ]
+    
+    # Ensure we have at least some data in the filtered dataset
+    if len(df_filtered) < 5:
+        print("Warning: Filtering was too strict, only found", len(df_filtered), "examples")
+        print("Using less strict filtering to ensure we get some examples")
+        
+        # Try with more lenient thresholds
+        df_filtered = df[
+            (df["instruction"].apply(len) > 10) &
+            (df["response"].apply(len) > 20)
+        ]
+        
+        # If still too few, take the top 10 examples by response length
+        if len(df_filtered) < 5:
+            print("Using top examples by response length")
+            df_filtered = df.sort_values(by="response", key=lambda x: x.str.len(), ascending=False).head(10)
+    
+    print(f"Final filtered dataset has {len(df_filtered)} examples")
     
     # Save filtered dataset
     filtered_dataset = Dataset.from_pandas(df_filtered)

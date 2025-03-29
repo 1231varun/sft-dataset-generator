@@ -2,13 +2,13 @@
 
 ## Basic Statistics
 
-- **total_examples**: 30
-- **avg_instruction_length**: 46.86666666666667
-- **max_instruction_length**: 64
-- **min_instruction_length**: 39
-- **avg_response_length**: 125.43333333333334
-- **max_response_length**: 143
-- **min_response_length**: 105
+- **total_examples**: 25
+- **avg_instruction_length**: 88.44
+- **max_instruction_length**: 100
+- **min_instruction_length**: 76
+- **avg_response_length**: 1136.28
+- **max_response_length**: 1338
+- **min_response_length**: 1042
 
 ## Domain Distribution
 
@@ -27,9 +27,9 @@
 
 ## Filtering Process
 
-- Original dataset size: 30
-- Filtered dataset size: 0
-- Percentage retained: 0.00%
+- Original dataset size: 25
+- Filtered dataset size: 21
+- Percentage retained: 84.00%
 
 ### Filtering Criteria
 
