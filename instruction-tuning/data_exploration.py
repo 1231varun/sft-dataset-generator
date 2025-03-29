@@ -29,7 +29,7 @@ MIN_RESPONSE_LENGTH = int(os.environ.get("MIN_RESPONSE_LENGTH", "30"))
 MIN_READABILITY_SCORE = float(os.environ.get("MIN_READABILITY_SCORE", "10"))
 
 # Create output directory
-OUTPUT_DIR = "analysis_output"
+OUTPUT_DIR = "instruction-tuning/analysis_output"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 print(f"Output will be saved to {OUTPUT_DIR}/ directory")
 

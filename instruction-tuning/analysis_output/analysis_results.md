@@ -3,10 +3,10 @@
 ## Basic Statistics
 
 - **total_examples**: 25
-- **avg_instruction_length**: 88.44
+- **avg_instruction_length**: 90.08
 - **max_instruction_length**: 100
 - **min_instruction_length**: 76
-- **avg_response_length**: 1136.28
+- **avg_response_length**: 1159.6
 - **max_response_length**: 1338
 - **min_response_length**: 1042
 
@@ -28,8 +28,8 @@
 ## Filtering Process
 
 - Original dataset size: 25
-- Filtered dataset size: 21
-- Percentage retained: 84.00%
+- Filtered dataset size: 19
+- Percentage retained: 76.00%
 
 ### Filtering Criteria
 
